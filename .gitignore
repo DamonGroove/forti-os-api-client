@@ -3,5 +3,7 @@
 .env
 
 #Misc
-venv
+venv/
 *.csv
+__pycache__/
+.idea/
