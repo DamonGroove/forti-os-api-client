@@ -1,7 +1,6 @@
 forti_os_api_client
 
 A Useful FortiOS API Client Library
-By: Damon Sawyer
 
 Getting Started:
 
