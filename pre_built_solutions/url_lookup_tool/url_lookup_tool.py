@@ -13,6 +13,8 @@ ratingsList = get_ratings_list(import_file)
 def to_deny_url_list(url_list, non_fgt_allow_cat, non_fgt_cat_col, fgt_cat_col, url_col, fgt_web_profile):
     to_deny_list = []
     denied_cats = get_denied_categories(fgt_web_profile)
+    # print(len(url_list))
+    # print(denied_cats)
     for row in url_list:
         if non_fgt_allow_cat != row.get(non_fgt_cat_col):
             is_fgt_cat_denied = is_fgt_denied(row.get(fgt_cat_col), denied_cats)
@@ -41,14 +43,13 @@ def to_deny_cat_list(url_list, non_fgt_allow_cat, non_fgt_cat_col, fgt_cat_col, 
 
 # Return a list of blocked/denied URLs and their Categories and Sub-Categories
 def get_deny_url_cat(url_list):
+    # print(len(url_list))
     cat_url_list = []
-    short_cat_list = []
     for url in url_list:
         category = rating_lookup(url)
-        short_cat_list.append(category[1])
         category.append(url)
         cat_url_list.append(category)
-
+    print(len(cat_url_list))
     return cat_url_list
 
 
@@ -70,4 +71,4 @@ def has_item(item, item_list):
 
 # Export a CSV of a URL's category and subcategory that needs to blocked
 write_csv(get_deny_url_cat(to_deny_url_list(ratingsList, "la",
-                                     "external category", "fortigate subcategory", "url", "test1")), export_file)
+                                     "external category", "fortigate subcategory", "url", "test3")), export_file)

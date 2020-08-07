@@ -13,6 +13,8 @@ url_column = 'url'
 
 def rating_lookup(url):
     results = RestResponse.parse(fortigate_api_monitor.utm.rating_lookup("?url={}".format(url)).body).results
+    if results.subcategory == 'Unrated':
+        return ['Unrated', results.subcategory]
     return [results.category, results.subcategory]
 
 
@@ -21,10 +23,8 @@ def get_ratings_list(src_csv_path):
     ratings_list = []
     for row in row_list:
         rating = rating_lookup(row.get(url_column))
-        count = 0
-        for name in web_category_columns:
-            row[name] = rating[count]
-            count = count + 1
+        row['fortigate category'] = rating[0]
+        row['fortigate subcategory'] = rating[1]
         ratings_list.append(row)
     return ratings_list
 
