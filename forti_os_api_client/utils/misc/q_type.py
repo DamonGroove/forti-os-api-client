@@ -9,3 +9,11 @@ from RestResponse import RestResponse
 # Get the QType from a CMDB table
 def get_q_type(table):
     return RestResponse.parse(table("?action=schema").body).results.q_type
+
+
+class QType:
+    # Table as a parameter
+    # Get the QType from a CMDB table
+    @staticmethod
+    def get(table):
+        return RestResponse.parse(table("?action=schema").body).results.q_type
