@@ -27,7 +27,6 @@ class ObjectUsage:
         return RestResponse.parse(fortigate_api_monitor.system.object_usage(
             "?mkey={}&qtypes=%5B{}%5D".format(obj, q_type.get(table))).body).results.currently_using
 
-
 # Example Use:
 # usage = ObjectUsage
 # print(usage.get("wan1", fortigate_api_cmdb.system.interfaces))

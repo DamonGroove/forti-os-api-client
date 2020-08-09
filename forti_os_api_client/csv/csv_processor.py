@@ -31,15 +31,14 @@ class CSVProcessor:
     # Pass a function that will process the data and the row_list's column name that will be the input for the function
     # The output of the function will be written to the column_names' rows,
     # The function's output list size should be equal to the column_names list size or an error will be thrown
-    @classmethod
-    def write_func(cls, row_list, out_csv_path, col_output_names, func, col_input_names):
+    def write_func(self, row_list, out_csv_path, col_output_names, func, col_input_names):
         with open(out_csv_path, mode='w') as csv_file:
             writer = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
-            if len(col_output_names) == len(func(cls.__get_row_value(col_input_names, row_list[0]))):
+            if len(col_output_names) == len(func(self.__get_row_value(col_input_names, row_list[0]))):
                 for row in row_list:
                     if row_list.index(row) != 0:
-                        func_output = func(cls.__get_row_value(col_input_names, row))
+                        func_output = func(self.__get_row_value(col_input_names, row))
                         count = 0
                         for name in col_output_names:
                             row[name] = func_output[count]
@@ -51,8 +50,8 @@ class CSVProcessor:
                 print("column_names list size does not equal func_output list size")
 
     # Return row value
-    @classmethod
-    def __get_row_value(cls, input_list, row):
+    @staticmethod
+    def __get_row_value(input_list, row):
         output_list = []
         if isinstance(input_list, list):
             for obj in input_list:

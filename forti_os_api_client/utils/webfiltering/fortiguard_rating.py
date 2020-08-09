@@ -9,31 +9,32 @@ class FortiGuardRating:
     # Define resources
     fortigate_api_monitor.add_resource(resource_name="utm", resource_class=UTMMonitor)
 
-    web_category_columns = {'fortigate category', 'fortigate subcategory'}
-    url_column = 'url'
+    def __init__(self, category_column='fortigate category', subcategory_column='fortigate subcategory', url_column='url'):
+        self.category_column = category_column
+        self.subcategory_column = subcategory_column
+        self.web_category_columns = {category_column, subcategory_column}
+        self.url_column = url_column
 
-    @classmethod
-    def lookup(cls, url):
+    @staticmethod
+    def lookup(url):
         results = RestResponse.parse(fortigate_api_monitor.utm.rating_lookup("?url={}".format(url)).body).results
         if results.subcategory == 'Unrated':
             return ['Unrated', results.subcategory]
         return [results.category, results.subcategory]
 
-    @classmethod
-    def get_list(cls, src_csv_path):
+    def get_list(self, src_csv_path):
         processor = CSVProcessor()
         row_list = processor.read(src_csv_path)
         ratings_list = []
         for row in row_list:
-            rating = cls.lookup(row.get(cls.url_column))
-            row['fortigate category'] = rating[0]
-            row['fortigate subcategory'] = rating[1]
+            rating = self.lookup(row.get(self.url_column))
+            row[self.category_column] = rating[0]
+            row[self.subcategory_column] = rating[1]
             ratings_list.append(row)
         return ratings_list
 
-    @classmethod
-    def write_csv(cls, src_csv_path, out_csv_path):
+    def write_csv(self, src_csv_path, out_csv_path):
         processor = CSVProcessor()
-        processor.write_func(processor.read(src_csv_path), out_csv_path, cls.web_category_columns, cls.lookup,
-                             cls.url_column)
+        processor.write_func(processor.read(src_csv_path), out_csv_path, self.web_category_columns, self.lookup,
+                             self.url_column)
 
