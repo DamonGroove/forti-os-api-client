@@ -1,4 +1,4 @@
-forti_os_api_client
+forti-os-api-client
 
 A Useful FortiOS API Client Library
 
